@@ -1,0 +1,863 @@
+{
+  "trip": {
+    "tripDate": "2024-07-19",
+    "trainType": "ICE",
+    "vzn": "1672",
+    "actualPosition": 54357,
+    "distanceFromLastStop": 23,
+    "totalDistance": 735150,
+    "stopInfo": {
+      "scheduledNext": "8000337",
+      "actualNext": "8000337",
+      "actualLast": "8000124",
+      "actualLastStarted": "8000337",
+      "finalStationName": "Ostseebad Binz",
+      "finalStationEvaNr": "8011191"
+    },
+    "stops": [
+      {
+        "station": {
+          "evaNr": "8000105",
+          "name": "Frankfurt(Main)Hbf",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 50.107145,
+            "longitude": 8.663789
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": null,
+          "actualArrivalTime": null,
+          "showActualArrivalTime": null,
+          "arrivalDelay": "",
+          "scheduledDepartureTime": 1721371860000,
+          "actualDepartureTime": 1721372479000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+10"
+        },
+        "track": {
+          "scheduled": "13",
+          "actual": "12"
+        },
+        "info": {
+          "status": 0,
+          "passed": true,
+          "positionStatus": "passed",
+          "distance": 0,
+          "distanceFromStart": 0
+        },
+        "delayReasons": null
+      },
+      {
+        "station": {
+          "evaNr": "8000111",
+          "name": "Friedberg(Hess)",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 50.332606,
+            "longitude": 8.762056
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721373300000,
+          "actualArrivalTime": 1721374361000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+17",
+          "scheduledDepartureTime": 1721373360000,
+          "actualDepartureTime": 1721374431000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+17"
+        },
+        "track": {
+          "scheduled": "4",
+          "actual": "4"
+        },
+        "info": {
+          "status": 0,
+          "passed": true,
+          "positionStatus": "passed",
+          "distance": 26034,
+          "distanceFromStart": 26034
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8000124",
+          "name": "Gießen",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 50.579059,
+            "longitude": 8.661462
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721374380000,
+          "actualArrivalTime": 1721375400000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+17",
+          "scheduledDepartureTime": 1721374440000,
+          "actualDepartureTime": 1721375460000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+17"
+        },
+        "track": {
+          "scheduled": "2",
+          "actual": "2"
+        },
+        "info": {
+          "status": 0,
+          "passed": true,
+          "positionStatus": "departed",
+          "distance": 28323,
+          "distanceFromStart": 54357
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8000337",
+          "name": "Marburg(Lahn)",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 50.819272,
+            "longitude": 8.775014
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721375400000,
+          "actualArrivalTime": 1721376300000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+15",
+          "scheduledDepartureTime": 1721375460000,
+          "actualDepartureTime": 1721376420000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+16"
+        },
+        "track": {
+          "scheduled": "5",
+          "actual": "5"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 27890,
+          "distanceFromStart": 82247
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8000129",
+          "name": "Treysa",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 50.910661,
+            "longitude": 9.185673
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721376840000,
+          "actualArrivalTime": 1721377740000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+15",
+          "scheduledDepartureTime": 1721376900000,
+          "actualDepartureTime": 1721377800000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+15"
+        },
+        "track": {
+          "scheduled": "2",
+          "actual": "2"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 30568,
+          "distanceFromStart": 112815
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8000368",
+          "name": "Wabern(Bz Kassel)",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 51.103134,
+            "longitude": 9.35804
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721377920000,
+          "actualArrivalTime": 1721378700000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+13",
+          "scheduledDepartureTime": 1721377980000,
+          "actualDepartureTime": 1721378760000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+13"
+        },
+        "track": {
+          "scheduled": "5",
+          "actual": "5"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 24573,
+          "distanceFromStart": 137388
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8003200",
+          "name": "Kassel-Wilhelmshöhe",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 51.3125585,
+            "longitude": 9.44711566
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721379240000,
+          "actualArrivalTime": 1721379900000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+11",
+          "scheduledDepartureTime": 1721379360000,
+          "actualDepartureTime": 1721380080000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+12"
+        },
+        "track": {
+          "scheduled": "3",
+          "actual": "3"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 24106,
+          "distanceFromStart": 161494
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8000128",
+          "name": "Göttingen",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 51.536815,
+            "longitude": 9.926072
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721380560000,
+          "actualArrivalTime": 1721381160000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+10",
+          "scheduledDepartureTime": 1721380620000,
+          "actualDepartureTime": 1721381280000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+11"
+        },
+        "track": {
+          "scheduled": "9",
+          "actual": "9"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 41540,
+          "distanceFromStart": 203034
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8000152",
+          "name": "Hannover Hbf",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 52.376761,
+            "longitude": 9.741021
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721382960000,
+          "actualArrivalTime": 1721383380000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+7",
+          "scheduledDepartureTime": 1721383140000,
+          "actualDepartureTime": 1721383500000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+6"
+        },
+        "track": {
+          "scheduled": "8",
+          "actual": "8"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 94281,
+          "distanceFromStart": 297315
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8000064",
+          "name": "Celle",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 52.6204548,
+            "longitude": 10.062468
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721384220000,
+          "actualArrivalTime": 1721384580000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+6",
+          "scheduledDepartureTime": 1721384280000,
+          "actualDepartureTime": 1721384640000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+6"
+        },
+        "track": {
+          "scheduled": "5",
+          "actual": "5"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 34763,
+          "distanceFromStart": 332078
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8000168",
+          "name": "Uelzen",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 52.969781,
+            "longitude": 10.553053
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721385600000,
+          "actualArrivalTime": 1721385900000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+5",
+          "scheduledDepartureTime": 1721385720000,
+          "actualDepartureTime": 1721386020000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+5"
+        },
+        "track": {
+          "scheduled": "102",
+          "actual": "102"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 50973,
+          "distanceFromStart": 383051
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8000238",
+          "name": "Lüneburg",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 53.249656,
+            "longitude": 10.41989
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721386620000,
+          "actualArrivalTime": 1721386800000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+3",
+          "scheduledDepartureTime": 1721386740000,
+          "actualDepartureTime": 1721386920000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+3"
+        },
+        "track": {
+          "scheduled": "2",
+          "actual": "2"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 32374,
+          "distanceFromStart": 415425
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8000147",
+          "name": "Hamburg-Harburg",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 53.455908,
+            "longitude": 9.991701
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721387760000,
+          "actualArrivalTime": 1721387940000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+3",
+          "scheduledDepartureTime": 1721387880000,
+          "actualDepartureTime": 1721388060000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+3"
+        },
+        "track": {
+          "scheduled": "1",
+          "actual": "1"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 36529,
+          "distanceFromStart": 451954
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8002549",
+          "name": "Hamburg Hbf",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 53.552736,
+            "longitude": 10.006909
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721388600000,
+          "actualArrivalTime": 1721388780000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "+3",
+          "scheduledDepartureTime": 1721389380000,
+          "actualDepartureTime": 1721389560000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+3"
+        },
+        "track": {
+          "scheduled": "11A-C",
+          "actual": "11A-C"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 10817,
+          "distanceFromStart": 462771
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8010324",
+          "name": "Schwerin Hbf",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 53.634739,
+            "longitude": 11.407455
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721392560000,
+          "actualArrivalTime": 1721392560000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "",
+          "scheduledDepartureTime": 1721392620000,
+          "actualDepartureTime": 1721392740000,
+          "showActualDepartureTime": true,
+          "departureDelay": "+2"
+        },
+        "track": {
+          "scheduled": "2",
+          "actual": "2"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 92902,
+          "distanceFromStart": 555673
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8010066",
+          "name": "Bützow",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 53.8371137,
+            "longitude": 11.9981942
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721394480000,
+          "actualArrivalTime": 1721394480000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "",
+          "scheduledDepartureTime": 1721394600000,
+          "actualDepartureTime": 1721394600000,
+          "showActualDepartureTime": true,
+          "departureDelay": ""
+        },
+        "track": {
+          "scheduled": "2",
+          "actual": "2"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 44913,
+          "distanceFromStart": 600586
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8010304",
+          "name": "Rostock Hbf",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 54.078246,
+            "longitude": 12.131079
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721395920000,
+          "actualArrivalTime": 1721395920000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "",
+          "scheduledDepartureTime": 1721396280000,
+          "actualDepartureTime": 1721396280000,
+          "showActualDepartureTime": true,
+          "departureDelay": ""
+        },
+        "track": {
+          "scheduled": "7",
+          "actual": "7"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 28195,
+          "distanceFromStart": 628781
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8012763",
+          "name": "Ribnitz-Damgarten West",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 54.239176,
+            "longitude": 12.436965
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721397540000,
+          "actualArrivalTime": 1721397540000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "",
+          "scheduledDepartureTime": 1721397660000,
+          "actualDepartureTime": 1721397660000,
+          "showActualDepartureTime": true,
+          "departureDelay": ""
+        },
+        "track": {
+          "scheduled": "1",
+          "actual": "1"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 26782,
+          "distanceFromStart": 655563
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8010355",
+          "name": "Velgast",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 54.277316,
+            "longitude": 12.803137
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721398500000,
+          "actualArrivalTime": 1721398500000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "",
+          "scheduledDepartureTime": 1721398560000,
+          "actualDepartureTime": 1721398560000,
+          "showActualDepartureTime": true,
+          "departureDelay": ""
+        },
+        "track": {
+          "scheduled": "2",
+          "actual": "2"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 24166,
+          "distanceFromStart": 679729
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8010338",
+          "name": "Stralsund Hbf",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 54.308626,
+            "longitude": 13.077321
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721399400000,
+          "actualArrivalTime": 1721399400000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "",
+          "scheduledDepartureTime": 1721399520000,
+          "actualDepartureTime": 1721399520000,
+          "showActualDepartureTime": true,
+          "departureDelay": ""
+        },
+        "track": {
+          "scheduled": "6",
+          "actual": "6"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 18136,
+          "distanceFromStart": 697865
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8010033",
+          "name": "Bergen auf Rügen",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 54.4205,
+            "longitude": 13.417821
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721400840000,
+          "actualArrivalTime": 1721400840000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "",
+          "scheduledDepartureTime": 1721400960000,
+          "actualDepartureTime": 1721400960000,
+          "showActualDepartureTime": true,
+          "departureDelay": ""
+        },
+        "track": {
+          "scheduled": "2",
+          "actual": "2"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 25332,
+          "distanceFromStart": 723197
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      },
+      {
+        "station": {
+          "evaNr": "8011191",
+          "name": "Ostseebad Binz",
+          "code": null,
+          "geocoordinates": {
+            "latitude": 54.404819,
+            "longitude": 13.600507
+          }
+        },
+        "timetable": {
+          "scheduledArrivalTime": 1721402400000,
+          "actualArrivalTime": 1721402400000,
+          "showActualArrivalTime": true,
+          "arrivalDelay": "",
+          "scheduledDepartureTime": null,
+          "actualDepartureTime": null,
+          "showActualDepartureTime": null,
+          "departureDelay": ""
+        },
+        "track": {
+          "scheduled": "2",
+          "actual": "2"
+        },
+        "info": {
+          "status": 0,
+          "passed": false,
+          "positionStatus": "future",
+          "distance": 11953,
+          "distanceFromStart": 735150
+        },
+        "delayReasons": [
+          {
+            "code": "47",
+            "text": "verspätete Bereitstellung des Zuges"
+          }
+        ]
+      }
+    ]
+  },
+  "connection": {
+    "trainType": null,
+    "vzn": null,
+    "trainNumber": null,
+    "station": null,
+    "timetable": null,
+    "track": null,
+    "info": null,
+    "stops": null,
+    "conflict": "NO_CONFLICT"
+  },
+  "active": null
+}
