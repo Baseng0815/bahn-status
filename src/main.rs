@@ -1,10 +1,10 @@
-use std::{error::Error, io::stdout, path::PathBuf};
+use std::{error::Error, io::stdout, time::Duration};
 
-use api::{ApiPaths, Info};
-use frontend::ui;
-use ratatui::{backend::CrosstermBackend, crossterm::{terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen}, ExecutableCommand}, Terminal};
-
-use crate::{api::{ApiEndpoints, StatusInfo, TripInfo}, frontend::handle_events};
+use frontend::Frontend;
+use ratatui::crossterm::{
+    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    ExecutableCommand,
+};
 
 mod api;
 mod frontend;
@@ -17,16 +17,13 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // let info = Info::query(&endpoints)?;
 
-    // frontend loop
-    enable_raw_mode();
-    stdout().execute(EnterAlternateScreen)?;
-    let mut terminal = Terminal::new(CrosstermBackend::new(stdout()))?;
+    let tick_rate = Duration::from_millis(1000); // update every second
 
-    let mut should_quit = false;
-    while !should_quit {
-        terminal.draw(ui)?;
-        should_quit = handle_events()?;
-    }
+    enable_raw_mode()?;
+    stdout().execute(EnterAlternateScreen)?;
+
+    let mut frontend = Frontend::new(50)?;
+    frontend.enter_loop(tick_rate)?;
 
     disable_raw_mode()?;
     stdout().execute(LeaveAlternateScreen)?;

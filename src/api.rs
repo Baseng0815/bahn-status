@@ -2,8 +2,14 @@
 
 // Status
 
-use std::{error::Error, fs::{self, File}, io::Read, path::{Path, PathBuf}};
+use std::{
+    error::Error,
+    fs::{self, File},
+    io::Read,
+    path::{Path, PathBuf},
+};
 
+use rand::Rng;
 use serde::Deserialize;
 
 #[derive(Default, Deserialize, Debug)]
@@ -42,7 +48,7 @@ pub struct StatusInfo {
     pub tzn: String, // train number
     pub wagonClass: String,
     connectivity: Connectivity,
-    pub bapInstalled: bool // bap = bahn-api ?
+    pub bapInstalled: bool, // bap = bahn-api ?
 }
 
 // Trip
@@ -156,7 +162,10 @@ impl StatusInfo {
 
         let response = client
             .get(endpoint)
-            .header("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0")
+            .header(
+                "User-Agent",
+                "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+            )
             .send()?;
         let deserialized = response.json()?;
         Ok(deserialized)
@@ -164,7 +173,8 @@ impl StatusInfo {
 
     pub fn from_file(path: &Path) -> Result<StatusInfo, Box<dyn Error>> {
         let content = fs::read_to_string(path)?;
-        let status: StatusInfo = serde_json::from_str(&content)?;
+        let mut status: StatusInfo = serde_json::from_str(&content)?;
+        status.speed = rand::thread_rng().gen_range(0.0..300.0);
         Ok(status)
     }
 }
@@ -175,7 +185,10 @@ impl TripInfo {
 
         let response = client
             .get(endpoint)
-            .header("User-Agent", "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0")
+            .header(
+                "User-Agent",
+                "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
+            )
             .send()?;
         let deserialized = response.json()?;
         Ok(deserialized)
@@ -193,19 +206,13 @@ impl Info {
         let status = StatusInfo::query(&endpoints.status)?;
         let trip = TripInfo::query(&endpoints.trip)?;
 
-        Ok(Info {
-            status,
-            trip
-        })
+        Ok(Info { status, trip })
     }
 
     pub fn from_file(paths: &ApiPaths) -> Result<Info, Box<dyn Error>> {
         let status = StatusInfo::from_file(&paths.status)?;
         let trip = TripInfo::from_file(&paths.trip)?;
 
-        Ok(Info {
-            status,
-            trip
-        })
+        Ok(Info { status, trip })
     }
 }
