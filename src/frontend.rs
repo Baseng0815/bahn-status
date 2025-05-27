@@ -1,11 +1,31 @@
-use std::{collections::VecDeque, error::Error, io::{self, stdout, Stdout}, path::PathBuf, time::{Duration, Instant}};
+use std::{
+    collections::VecDeque,
+    error::Error,
+    io::{self, stdout, Stdout},
+    path::PathBuf,
+    time::{Duration, Instant},
+};
 
 use chrono::{DateTime, Local, NaiveDateTime};
 use ratatui::{
-    backend::CrosstermBackend, crossterm::{event::{self, Event, KeyCode}, terminal::{enable_raw_mode, EnterAlternateScreen}, ExecutableCommand}, layout::{Constraint, Direction, Layout, Rect}, style::Color, text::{Line, Span, Text}, widgets::{self, canvas::{Canvas, Circle, Map, MapResolution, Shape}, Block, Paragraph}, Frame, Terminal
+    backend::CrosstermBackend,
+    crossterm::{
+        event::{self, Event, KeyCode},
+        terminal::{enable_raw_mode, EnterAlternateScreen},
+        ExecutableCommand,
+    },
+    layout::{Constraint, Direction, Layout, Rect},
+    style::Color,
+    text::{Line, Span, Text},
+    widgets::{
+        self,
+        canvas::{Canvas, Circle, Map, MapResolution, Shape},
+        Block, Paragraph,
+    },
+    Frame, Terminal,
 };
 
-use crate::api::{ApiPaths, Info, Station, StatusInfo};
+use crate::api::{ApiEndpoints, ApiPaths, Info, Station, StatusInfo};
 
 // +- Status information --------------------------
 // | Current Speed:      113
@@ -16,7 +36,6 @@ use crate::api::{ApiPaths, Info, Station, StatusInfo};
 // | Distance to next:   21km (Friedberg (Hess))
 // | Latitude/longitude: (50.57N, 8.66W)
 // +-----------------------------------------------
-
 
 #[derive(Debug, PartialEq)]
 enum PanelSelection {
@@ -51,6 +70,10 @@ impl PanelSelection {
 pub struct Frontend {
     selection: PanelSelection,
     data: VecDeque<Info>, // server timestamp contained in status
+
+    // data for trip information
+    selected_station_detailed: bool,
+    selected_station: usize,
 }
 
 impl Frontend {
@@ -58,23 +81,44 @@ impl Frontend {
         Ok(Frontend {
             selection: PanelSelection::BasicInformation,
             data: VecDeque::with_capacity(bufsize),
+            selected_station_detailed: false,
+            selected_station: 0,
         })
     }
 
     fn draw_basic_info(&self, frame: &mut Frame, area: Rect) {
         let info = self.data.back().expect("Nothing to draw");
 
-        let content = format!("\
+        let content = format!(
+            "\
 Schienenfahrzeugtyp:           {}
 Schienenfahrzeugbezeichnung:   {}
 Sozioökonomisches Milieu:      {}
 Streckenführung:               von {} nach {}
-", info.status.trainType, info.status.tzn, info.status.wagonClass,
-info.trip.trip.stops.first().expect("Everything has to start somewhere").station.name,
-info.trip.trip.stops.last().expect("Everything has to end somewhere").station.name);
+",
+            info.status.trainType,
+            info.status.tzn,
+            info.status.wagonClass,
+            info.trip
+                .trip
+                .stops
+                .first()
+                .expect("Everything has to start somewhere")
+                .station
+                .name,
+            info.trip
+                .trip
+                .stops
+                .last()
+                .expect("Everything has to end somewhere")
+                .station
+                .name
+        );
 
         let block = if self.selection == PanelSelection::BasicInformation {
-            Block::bordered().title("Grundlegende Informationen").border_style(Color::Magenta)
+            Block::bordered()
+                .title("Grundlegende Informationen")
+                .border_style(Color::Magenta)
         } else {
             Block::bordered().title("Grundlegende Informationen")
         };
@@ -88,9 +132,23 @@ info.trip.trip.stops.last().expect("Everything has to end somewhere").station.na
         let ap = info.trip.trip.actualPosition;
         let td = info.trip.trip.totalDistance;
 
-        let average_speed = self.data.iter().fold(0.0, |acc, e| acc + e.status.speed) / self.data.len() as f64;
+        let average_speed =
+            self.data.iter().fold(0.0, |acc, e| acc + e.status.speed) / self.data.len() as f64;
 
-        let content = format!("\
+        let next_stop_eva = &info.trip.trip.stopInfo.scheduledNext;
+        let next_stop = &info
+            .trip
+            .trip
+            .stops
+            .iter()
+            .find(|stop| &stop.station.evaNr == next_stop_eva)
+            .expect("A stop with this evaNr must exist");
+
+        let next_stop_dist = next_stop.info.distanceFromStart - ap;
+        let next_stop_name = &next_stop.station.name;
+
+        let content = format!(
+            "\
 Aktuelle Geschwindigkeit:      {:.0}km/h
    Gleitender Mittelwert:      {:.0}km/h
 Internetzwerkverbindungsgüte:  {}
@@ -99,11 +157,24 @@ Davon bereits zurückgelegt:    {}km ({:.2}%)
 Verbleibend (nach Adam Riese): {}km ({:.2}%)
 Entfernung zum nächsten Halt:  {}km ({})
 Aktuelle geographische Lage:   ({:.03}N, {:.03}W)",
-info.status.speed, average_speed, info.status.internet, td / 1000, ap / 1000, ap as f64 / td as f64 * 100.0,
-(td - ap) / 1000, (td - ap) as f64 / td as f64 * 100.0, 0, "NEXT STOP", info.status.latitude, info.status.longitude);
+            info.status.speed,
+            average_speed,
+            info.status.internet,
+            td / 1000,
+            ap / 1000,
+            ap as f64 / td as f64 * 100.0,
+            (td - ap) / 1000,
+            (td - ap) as f64 / td as f64 * 100.0,
+            next_stop_dist / 1000,
+            next_stop_name,
+            info.status.latitude,
+            info.status.longitude
+        );
 
         let block = if self.selection == PanelSelection::StatusInformation {
-            Block::bordered().title("Statusinformation").border_style(Color::Magenta)
+            Block::bordered()
+                .title("Statusinformation")
+                .border_style(Color::Magenta)
         } else {
             Block::bordered().title("Statusinformation")
         };
@@ -113,7 +184,9 @@ info.status.speed, average_speed, info.status.internet, td / 1000, ap / 1000, ap
 
     fn draw_speed_graph(&self, frame: &mut Frame, area: Rect) {
         let block = if self.selection == PanelSelection::SpeedInformation {
-            Block::bordered().title("Geschwindigkeitsverlauf").border_style(Color::Magenta)
+            Block::bordered()
+                .title("Geschwindigkeitsverlauf")
+                .border_style(Color::Magenta)
         } else {
             Block::bordered().title("Geschwindigkeitsverlauf")
         };
@@ -123,29 +196,24 @@ info.status.speed, average_speed, info.status.internet, td / 1000, ap / 1000, ap
             .x_bounds([0.0, self.data.capacity() as f64])
             .y_bounds([0.0, 300.0])
             .paint(|ctx| {
-                for (xc, (curr, next)) in self.data.iter().zip(self.data.iter().skip(1)).enumerate() {
+                for (xc, (curr, next)) in self.data.iter().zip(self.data.iter().skip(1)).enumerate()
+                {
                     ctx.draw(&widgets::canvas::Line {
                         x1: xc as f64,
                         y1: curr.status.speed,
                         x2: xc as f64 + 1.0,
                         y2: next.status.speed,
-                        color: if curr.status.speed >= next.status.speed { Color::Red } else { Color::Green }
+                        color: if curr.status.speed > next.status.speed {
+                            Color::Red
+                        } else {
+                            Color::Green
+                        },
                     });
                 }
             });
 
         frame.render_widget(canvas, area);
     }
-
-    // struct TripShape {
-    //     stations: Vec<Station>
-    // }
-
-    // impl Shape for TripShape {
-    //     fn draw(&self, painter: &mut ratatui::widgets::canvas::Painter) {
-    //         painter.li
-    //     }
-    // }
 
     fn draw_trip(&self, frame: &mut Frame, area: Rect) {
         let info = self.data.back().expect("Nothing to draw");
@@ -154,95 +222,130 @@ info.status.speed, average_speed, info.status.internet, td / 1000, ap / 1000, ap
 
         let height = (area.height - 2) as usize; // subtract 2 for border
 
-        let (mut miny, mut maxy, mut minx, mut maxx) = (f64::MAX, f64::MIN, f64::MAX, f64::MIN);
-        for stop in &info.trip.trip.stops {
-            miny = stop.station.geocoordinates.latitude.min(miny);
-            maxy = stop.station.geocoordinates.latitude.max(maxy);
-            minx = stop.station.geocoordinates.longitude.min(minx);
-            maxx = stop.station.geocoordinates.longitude.max(maxx);
-        }
-
-        let data_when: DateTime<Local> = DateTime::from_timestamp(info.status.serverTime as i64, 0).unwrap().into();
+        let data_when: DateTime<Local> =
+            DateTime::from_timestamp(info.status.serverTime as i64 / 1000, 0)
+                .unwrap()
+                .into();
         let now = Local::now().time();
         let diff = now - data_when.time();
 
         let block = if self.selection == PanelSelection::TripInformation {
-            Block::bordered().title("Streckenverlauf").border_style(Color::Magenta)
-                .title_bottom(format!("[Zuletzt aktualisiert: {} (vor {} Sekunden)]", data_when.format("%H:%M:%S"), diff.num_seconds()))
+            Block::bordered()
+                .title("Streckenverlauf")
+                .border_style(Color::Magenta)
+                .title_bottom(format!(
+                    "[Zuletzt aktualisiert: {} (vor {} Sekunden)]",
+                    data_when.format("%H:%M:%S"),
+                    diff.num_seconds()
+                ))
         } else {
-            Block::bordered().title("Streckenverlauf")
-                .title_bottom(format!("[Zuletzt aktualisiert: {} (vor {} Sekunden)]", data_when.format("%H:%M:%S"), diff.num_seconds()))
+            Block::bordered()
+                .title("Streckenverlauf")
+                .title_bottom(format!(
+                    "[Zuletzt aktualisiert: {} (vor {} Sekunden)]",
+                    data_when.format("%H:%M:%S"),
+                    diff.num_seconds()
+                ))
         };
 
-        let canvas = Canvas::default()
-            .block(block)
-            .x_bounds([minx, maxx])
-            .y_bounds([miny, maxy])
-            .paint(|ctx| {
-                for (curr, next) in info.trip.trip.stops.iter().zip(info.trip.trip.stops.iter().skip(1)) {
-                    ctx.draw(&widgets::canvas::Line {
-                        x1: curr.station.geocoordinates.longitude,
-                        y1: curr.station.geocoordinates.latitude,
-                        x2: next.station.geocoordinates.longitude,
-                        y2: next.station.geocoordinates.latitude,
-                        color: Color::White,
-                    });
+        let area_inside = Rect {
+            x: area.x + 1,
+            y: area.y + 1,
+            width: area.width - 2,
+            height: area.height - 2,
+        };
 
-                    let text = if let Some(sat) = curr.timetable.scheduledArrivalTime {
-                        let time: DateTime<Local> = DateTime::from_timestamp(sat as i64 / 1000, 0).unwrap().into();
-                        let now = Local::now().time();
-                        let aat = curr.timetable.actualArrivalTime.expect("If there is a scheduled time there should also be an actual time");
-                        let delay = (aat as i64 - sat as i64) / 1000 / 60;
+        let layout_constraints = info.trip.trip.stops.iter().map(|stop| {
+            Constraint::Ratio(
+                stop.info.distanceFromStart as u32,
+                info.trip.trip.totalDistance as u32,
+            )
+        });
+        let layouts = Layout::new(Direction::Vertical, layout_constraints).split(area_inside);
 
-                        let delay_mood = match delay {
-                            -1000..0 => "🤨",
-                            0..1 => "😁",
-                            1..2 => "😄",
-                            2..4 => "😃",
-                            4..6 => "😀",
-                            6..9 => "🤔",
-                            9..13 => "🫠",
-                            13..18 => "🥲",
-                            18..30 => "😨",
-                            30..40 => "🫢",
-                            40..60 => "😬",
-                            60..80 => "🫨",
-                            80..100 => "🤮",
-                            100..120 => "🤯",
-                            120..140 => "🤬",
-                            _ => "💀",
-                        };
+        // draw line (will get overwritten later on) (TODO)
+        // for i in 0..area.height {
+        //     frame.render_widget(Paragraph::new(" |"), R);
+        // }
 
-                        if delay == 0 {
-                            format!("{} ({})", curr.station.name.clone(), time.format("%H:%M"))
-                        } else {
-                            format!("{} ({}; {}{}{})", curr.station.name.clone(), time.format("%H:%M"),
-                            if delay < 0 { "-" } else { "+" }, delay, delay_mood)
-                        }
-                    } else {
-                        format!("{} (-)", curr.station.name.clone())
-                    };
+        // draw stations
+        for (i, stop) in info.trip.trip.stops.iter().enumerate() {
+            let layout = layouts[i];
 
-                    ctx.print(curr.station.geocoordinates.longitude, curr.station.geocoordinates.latitude, Line::from(text));
+            let text = if let Some(sat) = stop.timetable.scheduledArrivalTime {
+                let time: DateTime<Local> = DateTime::from_timestamp(sat as i64 / 1000, 0)
+                    .unwrap()
+                    .into();
+                let now = Local::now().time();
+                let aat = stop
+                    .timetable
+                    .actualArrivalTime
+                    .expect("If there is a scheduled time there should also be an actual time");
+                let delay = (aat as i64 - sat as i64) / 1000 / 60;
+
+                if delay == 0 {
+                    format!("{} ({})", stop.station.name.clone(), time.format("%H:%M"))
+                } else {
+                    format!(
+                        "{} ({}; {}{})",
+                        stop.station.name.clone(),
+                        time.format("%H:%M"),
+                        if delay < 0 { "-" } else { "+" },
+                        delay
+                    )
                 }
+            } else {
+                format!("{} (-)", stop.station.name.clone())
+            };
 
-                ctx.draw(&Circle {
-                    x: info.trip.trip.stops[3].station.geocoordinates.longitude,
-                    y: info.trip.trip.stops[3].station.geocoordinates.latitude,
-                    radius: 0.01,
-                    color: Color::Red,
-                });
-            });
+            if self.selected_station_detailed && i == self.selected_station {
+                // detailed information (delay reasons, track, coordinates, distance...)
+                let track = format!(
+                    "Gleis {}{}",
+                    stop.track.actual,
+                    if stop.track.actual == stop.track.scheduled {
+                        String::from("")
+                    } else {
+                        format!("(urspr. {})", stop.track.scheduled)
+                    }
+                );
 
-        frame.render_widget(canvas, area);
+                let additional = format!("{}\n{}\n", text, track);
+                frame.render_widget(Paragraph::new(additional), layout);
+            } else {
+                frame.render_widget(Paragraph::new(text), layout);
+            }
+        }
+
+        let next_eva = &info.trip.trip.stopInfo.scheduledNext;
+        let next_stop = info
+            .trip
+            .trip
+            .stops
+            .iter()
+            .filter(|&stop| stop.station.evaNr == *next_eva)
+            .collect::<Vec<_>>();
+        assert_eq!(next_stop.len(), 1);
+
+        frame.render_widget(Paragraph::new("").block(block), area);
     }
 
     fn ui(&self, frame: &mut Frame) {
-        let layout = Layout::new(Direction::Vertical, [ Constraint::Length(6), Constraint::Length(10), Constraint::default() ])
-            .split(frame.size());
+        let layout = Layout::new(
+            Direction::Vertical,
+            [
+                Constraint::Length(6),
+                Constraint::Length(10),
+                Constraint::default(),
+            ],
+        )
+        .split(frame.size());
 
-        let layout_1 = Layout::new(Direction::Horizontal, [ Constraint::Min(50), Constraint::default() ])
-            .split(layout[1]);
+        let layout_1 = Layout::new(
+            Direction::Horizontal,
+            [Constraint::Min(50), Constraint::default()],
+        )
+        .split(layout[1]);
 
         self.draw_basic_info(frame, layout[0]);
         self.draw_status(frame, layout_1[0]);
@@ -252,12 +355,19 @@ info.status.speed, average_speed, info.status.internet, td / 1000, ap / 1000, ap
 
     // update state (query API, move graphs, ...)
     fn tick(&mut self) {
-        let files = ApiPaths {
-            status: PathBuf::from("sample/status.json"),
-            trip: PathBuf::from("sample/trip.json"),
+        // let files = ApiPaths {
+        //     status: PathBuf::from("sample/status.json"),
+        //     trip: PathBuf::from("sample/trip.json"),
+        // };
+
+        // let info = Info::from_file(&files).unwrap();
+
+        let endpoints = ApiEndpoints {
+            status: String::from("https://iceportal.de/api1/rs/status"),
+            trip: String::from("https://iceportal.de/api1/rs/tripInfo/trip"),
         };
 
-        let info = Info::from_file(&files).unwrap();
+        let info = Info::query(&endpoints).unwrap();
 
         if self.data.len() == self.data.capacity() {
             self.data.pop_front();
@@ -276,13 +386,43 @@ info.status.speed, average_speed, info.status.internet, td / 1000, ap / 1000, ap
 
             let timeout = tick_rate.saturating_sub(last_tick.elapsed());
 
-            if event::poll(timeout)? {
+            if event::poll(Duration::from_secs(1))? {
                 if let Event::Key(key) = event::read()? {
                     if key.kind == event::KeyEventKind::Press {
                         match key.code {
-                            KeyCode::Char('q') => { return Ok(true); }
-                            KeyCode::Tab => { self.selection.next(); }
-                            KeyCode::BackTab => { self.selection.prev(); }
+                            KeyCode::Char('q') => {
+                                return Ok(true);
+                            }
+                            KeyCode::Tab => {
+                                self.selection.next();
+                            }
+                            KeyCode::BackTab => {
+                                self.selection.prev();
+                            }
+                            KeyCode::Enter => {
+                                if self.selection == PanelSelection::TripInformation {
+                                    self.selected_station_detailed =
+                                        !self.selected_station_detailed;
+                                }
+                            }
+                            KeyCode::Char('k') => {
+                                if let Some(info) = self.data.back() {
+                                    if self.selected_station_detailed {
+                                        self.selected_station = (self.selected_station + 1)
+                                            .min(info.trip.trip.stops.len() - 1);
+                                    }
+                                }
+                            }
+                            KeyCode::Char('j') => {
+                                if let Some(info) = self.data.back() {
+                                    if self.selected_station_detailed {
+                                        self.selected_station = self
+                                            .selected_station
+                                            .checked_sub(1)
+                                            .unwrap_or(self.selected_station);
+                                    }
+                                }
+                            }
                             _ => (),
                         }
                     }

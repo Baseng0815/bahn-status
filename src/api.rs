@@ -27,8 +27,8 @@ pub struct ApiPaths {
 #[derive(Default, Deserialize, Debug)]
 pub struct Connectivity {
     currentState: String,
-    nextState: String,
-    remainingTimeSeconds: u64,
+    nextState: Option<String>,
+    remainingTimeSeconds: Option<u64>,
 }
 
 #[derive(Default, Deserialize, Debug)]

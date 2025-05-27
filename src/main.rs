@@ -17,9 +17,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // let info = Info::query(&endpoints)?;
 
-    let tick_rate = Duration::from_millis(1000); // update every second
+    let tick_rate = Duration::from_millis(5000); // update every 5 seconds
 
     enable_raw_mode()?;
+
     stdout().execute(EnterAlternateScreen)?;
 
     let mut frontend = Frontend::new(50)?;

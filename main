@@ -1,0 +1,31 @@
+-- You are riding on ICE9474 (ICE) -------------
+
++- Status information --------------------------
+| Current Speed:      113
+| Connectivity:       HIGH
+| Total trip length:  746km
+| Traveled so far:    73km
+| Remaining:          339km
+| Distance to next:   21km (Friedberg (Hess))
+| Latitude/longitude: (50.57N, 8.66W)
++-----------------------------------------------
+
++ Trip information -----------------------------
+|  x (START) <- Karlsruhe (08:51)
+|  |            actual departure: 08:57 (+6min)
+|  |
+|  x (65km)  <- Mannheim (09:23)
+|  |            actual departure: 09:31 (+8min)
+|  |               reason: people on track
+|  |
+|  |
+|  x (239km) <- Darmstadt (09:58)
+|  |
+|  x (257km) <- Frankfurt (10:07)
+|  |
+|  |
+|  |
+|  x (331km) <- Friedberg (Hess) (10:32)
++-----------------------------------------------
+
+-- Last updated: 31 seconds ago ----------------
