@@ -13,6 +13,12 @@ sein kann).
 
 ![](./docs/sample.png)
 
+## Wie kann ich es ausführen?
+
+1. verbinde dich mit dem ICE-Bordnetz
+2. lade das repository mithilfe von `git clone https://github.com/Baseng0815/bahn-status.git`
+3. führe das Programm aus mit `cargo run`
+
 ## Contribution
 
 ☝ Jedes Mal, wenn der Zug zu spaet kommt, schreibe ich eine Zeile Code.
